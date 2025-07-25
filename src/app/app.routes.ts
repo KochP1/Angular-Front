@@ -4,6 +4,7 @@ import { Login } from './login/login';
 import { Regist } from './regist/regist';
 import { Dashboard } from './dashboard/dashboard';
 import { authGuard } from './guards/auth.guards';
+import { RenderMode } from '@angular/ssr';
 
 export const routes: Routes = [
     {path: '', component: Login},
@@ -21,7 +22,13 @@ export const routes: Routes = [
 
         {
             path: 'edit_project/:id',
-            loadComponent: () => import('./dashboard/edit-project/edit-project').then((m => m.EditProject) )
+            loadComponent: () => import('./dashboard/edit-project/edit-project').then((m => m.EditProject) ),
+            data: { 
+                renderMode: 'manual',
+                ssr: {
+                    enabled: RenderMode.Server
+                }
+            }
         },
 
         {
@@ -31,7 +38,10 @@ export const routes: Routes = [
 
         {
             path: 'edit_users/:id',
-            loadComponent: () => import('./dashboard/edit-user/edit-user').then((m => m.EditUser) )
+            loadComponent: () => import('./dashboard/edit-user/edit-user').then((m => m.EditUser) ),
+            data: { 
+                renderMode: RenderMode.Client,
+            },
         },
 
         {
