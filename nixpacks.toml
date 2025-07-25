@@ -1,16 +1,11 @@
-
 node_version = "20.19.4"
 
 [phases.build]
 commands = [
     "npm install",
-    "npm run build",  # Mantiene la estructura original dist/client/
-    # Crea un enlace simbólico para compatibilidad
-    "ln -s dist/client/server dist/server || true"
+    "npm run build"
 ]
 
+
 [phases.start]
-commands = [
-    # Usa ruta relativa (sin /app)
-    "node dist/client/server/server.mjs"
-]
+commands = ["npm run serve:ssr:client"]
