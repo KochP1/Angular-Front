@@ -194,4 +194,29 @@ export class ProjectService {
       })
     )
   }
+
+  createTask(taskData: {
+    title: string,
+    description: string,
+    user_id: number,
+    project_id: number,
+    due_date: string
+  }) {
+    const token = this.authService.getToken();
+
+    if (!token) {
+      this.router.navigate(['/']);
+      return throwError(() => new Error('No autenticado'));
+    }
+
+    const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+    return this.http.post(`${this.apiUrl}/create_task`, taskData, { headers }).pipe(
+      catchError(error => {
+        console.error('Error creating task:', error);
+        return throwError(() => error);
+      })
+    )
+  }
 }

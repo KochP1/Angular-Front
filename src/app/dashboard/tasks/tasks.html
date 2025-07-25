@@ -1,24 +1,47 @@
 <div class="contenedor-tareas">
-    <form class="formulario-tarea">
+    <form class="formulario-tarea" [formGroup]="taskForm" (ngSubmit)="onSubmit()">
         <h2 class="titulo-formulario">Nueva Tarea</h2>
         
         <div class="grupo-formulario">
             <label for="titulo">Título</label>
-            <input type="text" id="titulo" placeholder="Ingrese el título">
+            <input type="text" id="titulo" placeholder="Ingrese el título" formControlName="title">
+            <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" class="error-message">
+                <span *ngIf="taskForm.get('title')?.errors?.['required']">El campo es requerido</span>
+                <span *ngIf="taskForm.get('title')?.errors?.['minlength']">Mínimo 1 carácter</span>
+                <span *ngIf="taskForm.get('title')?.errors?.['maxlength']">Máximo 20 caracteres</span>
+            </div>
         </div>
         
         <div class="grupo-formulario">
             <label for="descripcion">Descripción</label>
-            <textarea id="descripcion" rows="3" placeholder="Describa la tarea"></textarea>
+            <textarea id="descripcion" rows="3" placeholder="Describa la tarea" formControlName="description"></textarea>
+            <div *ngIf="taskForm.get('description')?.invalid && taskForm.get('title')?.touched" class="error-message">
+                <span *ngIf="taskForm.get('description')?.errors?.['required']">El campo es requerido</span>
+                <span *ngIf="taskForm.get('description')?.errors?.['minlength']">Mínimo 1 carácter</span>
+                <span *ngIf="taskForm.get('description')?.errors?.['maxlength']">Máximo 90 caracteres</span>
+            </div>
+        </div>
+
+        <div class="grupo-formulario">
+            <label for="persona-encargada">Persona encargada</label>
+            <select id="persona-encargada"  formControlName="user_id">
+                <option value="">Selecciona a una persona</option>
+                <option value="{{user.id}}" *ngFor="let user of users()">{{user.name}} {{user.lastName}}</option>
+            </select>
         </div>
         
         <div class="grupo-formulario">
             <label for="fecha-finalizacion">Fecha de Finalización</label>
-            <input type="date" id="fecha-finalizacion">
+            <input type="datetime-local" id="fecha-hora" name="fecha-hora" formControlName="due_date">
+
+            <div *ngIf="taskForm.get('description')?.invalid && taskForm.get('title')?.touched" class="error-message">
+                <span *ngIf="taskForm.get('description')?.errors?.['required']">El campo es requerido</span>
+            </div>
         </div>
         
         <button type="submit" class="boton-primario">Guardar Tarea</button>
     </form>
+    
 
     <!-- Listado de tareas -->
     <div class="listado-tareas" *ngIf="tasks() && !isLoading()">
@@ -35,11 +58,11 @@
             
             <div class="estado-tarea">
                 <span>Estado:</span>
-                <select class="selector-estado">
-                <option value="pending">Pendiente</option>
-                <option value="in progress">En progreso</option>
-                <option value="completed">Completada</option>
-                </select>
+                    <select class="selector-estado">
+                        <option value="pending">Pendiente</option>
+                        <option value="in progress">En progreso</option>
+                        <option value="completed">Completada</option>
+                    </select>
             </div>
             
             <div class="acciones-tarea">

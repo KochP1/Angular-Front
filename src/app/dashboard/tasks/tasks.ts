@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ProjectService } from '../../services/projectServices/project';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TaskInterface } from '../../services/projectServices/project';
 import { ActivatedRoute } from '@angular/router';
+import { Auth, User } from '../../services/auth';
 
 @Component({
   selector: 'app-tasks',
@@ -14,19 +15,41 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class Tasks {
 
+  taskForm: FormGroup;
   id: number;
   userData: any | null;
   private snackBar = inject(MatSnackBar);
 
   tasks = signal<TaskInterface[] | null>(null);
+  users = signal<User[] | null>([]);
   isLoading = signal(false);
   error = signal<string | null>(null);
-  constructor(private projectService: ProjectService, private route: ActivatedRoute) {
+  constructor(private projectService: ProjectService, private route: ActivatedRoute, private fb: FormBuilder, private authService: Auth) {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.taskForm = this.fb.group({
+      title: ['', [
+        Validators.required, 
+        Validators.minLength(1), 
+        Validators.maxLength(20)
+      ]],
+      description: ['', [
+        Validators.required, 
+        Validators.minLength(1), 
+        Validators.maxLength(90)
+      ]],
+      user_id: [null, Validators.required],
+      project_id: [this.id, Validators.required],
+
+      due_date: ['', [
+        Validators.required, 
+      ]],
+    })
   }
 
   ngOnInit() {
     this.loadUser();
+    this.loadUsers();
     this.load_task();
   }
 
@@ -47,6 +70,59 @@ export class Tasks {
       }
     });
   }
+
+  loadUsers(): void {
+    this.isLoading.set(true);
+    this.error.set(null);
+    
+    this.authService.listUsers().subscribe({
+      next: (users) => {
+        this.users.set(users);
+        console.log(this.users())
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Error al cargar usuarios');
+        this.isLoading.set(false);
+        this.snackBar.open(`Error al cargar usuarios: ${err.message}`, 'X', {
+            duration: 3000
+        })
+      }
+    });
+  }
+
+
+onSubmit(): void {
+  if (this.taskForm.valid) {
+    const formData = {
+      ...this.taskForm.value,
+      user_id: Number(this.taskForm.value.user_id),
+      due_date: new Date(this.taskForm.value.due_date).toISOString()
+    };
+
+    this.isLoading.set(true);
+    this.projectService.createTask(formData).subscribe({
+      next: (response) => {
+        this.snackBar.open('Tarea creada', 'X', { duration: 3000 });
+        this.load_task();
+        this.isLoading.set(false);
+
+        this.taskForm.reset({
+          project_id: this.id
+        });
+      },
+      error: (err) => {
+        this.error.set('Error al crear tarea');
+        this.isLoading.set(false);
+        this.snackBar.open(`Error al crear tarea: ${err.message}`, 'X', { duration: 3000 });
+      }
+    });
+  } else {
+    // Mostrar qué campos son inválidos
+    console.log('Formulario inválido. Errores:');
+    this.snackBar.open('Por favor complete todos los campos correctamente', 'X', { duration: 3000 });
+  }
+}
 
   private loadUser(): void {
     const user = localStorage.getItem('user');
@@ -70,7 +146,7 @@ export class Tasks {
 
       this.projectService.deleteTask(id).subscribe({
         next: () => {
-          this.snackBar.open('Tarea eliminado', 'X', { duration: 3000 });
+          this.snackBar.open('Tarea eliminada', 'X', { duration: 3000 });
           this.load_task();
         },
         error: (err) => {
