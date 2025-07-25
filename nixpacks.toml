@@ -8,3 +8,4 @@ commands = [
 
 [phases.start]
 commands = ["npm run serve:ssr:client"]
+type = "persistent"  # ¡Esta línea es crucial!
