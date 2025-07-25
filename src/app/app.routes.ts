@@ -47,6 +47,11 @@ export const routes: Routes = [
         {
             path: 'settings',
             loadComponent: () => import('./dashboard/settings/settings').then((m => m.Settings) )
+        },
+
+        {
+            path: 'tasks/:id',
+            loadComponent: () => import('./dashboard/tasks/tasks').then((m) => m.Tasks)
         }
     ]}
 ];

@@ -111,6 +111,10 @@ export class Projects implements OnInit{
     }
   }
 
+  onClick(id: number): void {
+    this.router.navigate(['/dashboard/tasks', id])
+  }
+
   editProject(projectId: number) {
     this.router.navigate(['/dashboard/edit_project', projectId]);
   }

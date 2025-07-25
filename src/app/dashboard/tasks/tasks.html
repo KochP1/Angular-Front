@@ -1,1 +1,76 @@
-<p>tasks works!</p>
+<div class="contenedor-tareas">
+  <!-- Formulario para crear tareas -->
+    <form class="formulario-tarea">
+        <h2 class="titulo-formulario">Nueva Tarea</h2>
+        
+        <div class="grupo-formulario">
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" placeholder="Ingrese el título">
+        </div>
+        
+        <div class="grupo-formulario">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" rows="3" placeholder="Describa la tarea"></textarea>
+        </div>
+        
+        <div class="grupo-formulario">
+            <label for="fecha-finalizacion">Fecha de Finalización</label>
+            <input type="date" id="fecha-finalizacion">
+        </div>
+        
+        <button type="submit" class="boton-primario">Guardar Tarea</button>
+    </form>
+
+    <!-- Listado de tareas -->
+    <div class="listado-tareas">
+        <h2 class="titulo-listado">Tareas Registradas</h2>
+        
+        <!-- Ejemplo de tarjeta de tarea -->
+        <div class="tarjeta-tarea">
+        <div class="cabecera-tarjeta">
+            <h3 class="titulo-tarea">Título de la tarea 1</h3>
+            <span class="fecha-tarea">Fecha: 15/10/2023</span>
+        </div>
+        
+        <p class="descripcion-tarea">Descripción de la tarea de ejemplo que se mostrará aquí.</p>
+        
+        <div class="estado-tarea">
+            <span>Estado:</span>
+            <select class="selector-estado">
+            <option>Pendiente</option>
+            <option>En progreso</option>
+            <option>Completada</option>
+            </select>
+        </div>
+        
+        <div class="acciones-tarea">
+            <button class="boton-editar">Editar</button>
+            <button class="boton-eliminar">Eliminar</button>
+        </div>
+        </div>
+        
+        <!-- Segunda tarjeta de ejemplo -->
+        <div class="tarjeta-tarea">
+        <div class="cabecera-tarjeta">
+            <h3 class="titulo-tarea">Título de la tarea 2</h3>
+            <span class="fecha-tarea">Fecha: 20/10/2023</span>
+        </div>
+        
+        <p class="descripcion-tarea">Otra descripción de tarea diferente para mostrar variedad.</p>
+        
+        <div class="estado-tarea">
+            <span>Estado:</span>
+            <select class="selector-estado">
+            <option>Pendiente</option>
+            <option selected>En progreso</option>
+            <option>Completada</option>
+            </select>
+        </div>
+        
+        <div class="acciones-tarea">
+            <button class="boton-editar">Editar</button>
+            <button class="boton-eliminar">Eliminar</button>
+        </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-tasks',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css'
 })
