@@ -1,1 +1,11 @@
 node_version = "22.19.4"
+
+[phases.build]
+commands = [
+    "npm install",
+    "npm run build"
+]
+
+
+[phases.start]
+commands = ["npm start"]
