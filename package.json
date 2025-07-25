@@ -8,7 +8,7 @@
   "scripts": {
     "ng": "ng",
     "dev": "ng serve",
-    "build": "ng build",
+    "build": "ng build --output-path=dist/client",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "start": "node dist/client/server/server.mjs",
