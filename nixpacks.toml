@@ -3,17 +3,9 @@ node_version = "20.19.4"
 [phases.build]
 commands = [
     "npm install",
-    "npm run build",
-    # Corrige la estructura de carpetas
-    "mkdir -p /app/dist",
-    "mv dist/client/server /app/dist/",
-    "mv dist/client/browser /app/dist/",
-    # Opcional: limpia la estructura original
-    "rm -rf dist/client"
+    "npm run build"
 ]
 
+
 [phases.start]
-commands = [
-    # Asegura que use la ruta correcta en Railway
-    "node /app/dist/server/server.mjs"
-]
+commands = ["npm start"]
