@@ -7,5 +7,4 @@ commands = [
 
 
 [phases.start]
-commands = ["npm run serve:ssr:client"]
-type = "persistent"  # ¡Esta línea es crucial!
+commands = ["npm run serve:ssr:client & sleep 5"]
