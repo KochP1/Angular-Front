@@ -13,6 +13,17 @@ export interface ProjectsInterface {
   createdAt?: string
 }
 
+export interface TaskInterface {
+  id: number
+  title: string
+  description: string
+  status: string
+  user_id: number
+  project_id: number
+  due_date?: string
+  created_at?: string
+}
+
 interface ProjectResponse {
   projects: ProjectsInterface[]
   message?: string
@@ -140,5 +151,47 @@ export class ProjectService {
       'Authorization': `Bearer ${token}`
     });
     return this.http.put(`${this.apiUrl}/edit_project/${id}`, projectData, { headers });
+  }
+
+  getTasksByProject(projectId: number): Observable<TaskInterface[]> {
+    const token = this.authService.getToken();
+
+    if (!token) {
+      this.router.navigate(['/']);
+      return throwError(() => new Error('No autenticado'));
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<TaskInterface[]>(
+      `${this.apiUrl}/get_task/${projectId}`,
+      { headers }
+    ).pipe(
+      catchError(error => {
+        console.error('Error fetching tasks:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  deleteTask(id:number) {
+    const token = this.authService.getToken();
+
+    if (!token) {
+      this.router.navigate(['/']);
+      return throwError(() => new Error('No autenticado'));
+    }
+
+    const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+    });
+    return this.http.delete(`${this.apiUrl}/delete_task/${id}`, { headers }).pipe(
+      catchError(error => {
+        console.error('Error deleting the task:', error);
+        return throwError(() => error);
+      })
+    )
   }
 }

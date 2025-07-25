@@ -1,5 +1,4 @@
 <div class="contenedor-tareas">
-  <!-- Formulario para crear tareas -->
     <form class="formulario-tarea">
         <h2 class="titulo-formulario">Nueva Tarea</h2>
         
@@ -22,55 +21,31 @@
     </form>
 
     <!-- Listado de tareas -->
-    <div class="listado-tareas">
+    <div class="listado-tareas" *ngIf="tasks() && !isLoading()">
         <h2 class="titulo-listado">Tareas Registradas</h2>
         
         <!-- Ejemplo de tarjeta de tarea -->
-        <div class="tarjeta-tarea">
-        <div class="cabecera-tarjeta">
-            <h3 class="titulo-tarea">Título de la tarea 1</h3>
-            <span class="fecha-tarea">Fecha: 15/10/2023</span>
-        </div>
-        
-        <p class="descripcion-tarea">Descripción de la tarea de ejemplo que se mostrará aquí.</p>
-        
-        <div class="estado-tarea">
-            <span>Estado:</span>
-            <select class="selector-estado">
-            <option>Pendiente</option>
-            <option>En progreso</option>
-            <option>Completada</option>
-            </select>
-        </div>
-        
-        <div class="acciones-tarea">
-            <button class="boton-editar">Editar</button>
-            <button class="boton-eliminar">Eliminar</button>
-        </div>
-        </div>
-        
-        <!-- Segunda tarjeta de ejemplo -->
-        <div class="tarjeta-tarea">
-        <div class="cabecera-tarjeta">
-            <h3 class="titulo-tarea">Título de la tarea 2</h3>
-            <span class="fecha-tarea">Fecha: 20/10/2023</span>
-        </div>
-        
-        <p class="descripcion-tarea">Otra descripción de tarea diferente para mostrar variedad.</p>
-        
-        <div class="estado-tarea">
-            <span>Estado:</span>
-            <select class="selector-estado">
-            <option>Pendiente</option>
-            <option selected>En progreso</option>
-            <option>Completada</option>
-            </select>
-        </div>
-        
-        <div class="acciones-tarea">
-            <button class="boton-editar">Editar</button>
-            <button class="boton-eliminar">Eliminar</button>
-        </div>
+        <div class="tarjeta-tarea" *ngFor="let task of tasks()">
+            <div class="cabecera-tarjeta">
+                <h3 class="titulo-tarea">{{task.title}}</h3>
+                <span class="fecha-tarea">Fecha: {{task.due_date}}</span>
+            </div>
+            
+            <p class="descripcion-tarea">{{task.description}}.</p>
+            
+            <div class="estado-tarea">
+                <span>Estado:</span>
+                <select class="selector-estado">
+                <option value="pending">Pendiente</option>
+                <option value="in progress">En progreso</option>
+                <option value="completed">Completada</option>
+                </select>
+            </div>
+            
+            <div class="acciones-tarea">
+                <button class="boton-editar">Editar</button>
+                <button class="boton-eliminar" (click)="delete(task.id)">Eliminar</button>
+            </div>
         </div>
     </div>
 </div>

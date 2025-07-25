@@ -19,5 +19,10 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'dashboard/edit_users/:id',
     renderMode: RenderMode.Client,
+  },
+
+  {
+    path: 'dashboard/tasks/:id',
+    renderMode: RenderMode.Client,
   }
 ];
