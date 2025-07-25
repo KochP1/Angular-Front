@@ -10,6 +10,6 @@ export default `<!doctype html>
 <style>*,*:before,*:after{box-sizing:border-box}*{margin:0}@media (prefers-reduced-motion: no-preference){html{interpolate-size:allow-keywords}}body{line-height:1.5;-webkit-font-smoothing:antialiased;font-family:sans-serif;height:100vh}</style><link rel="stylesheet" href="styles-R2M3VEQT.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-R2M3VEQT.css"></noscript></head>
 <body ngcm="">
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-C6QIP2PN.js"><link rel="modulepreload" href="chunk-SCZIA43R.js"><link rel="modulepreload" href="chunk-6MDQTQU3.js"><script src="polyfills-B6TNHZQ6.js" type="module"></script><script src="main-2S5H5DFD.js" type="module"></script></body>
+<link rel="modulepreload" href="chunk-2J57Y45N.js"><link rel="modulepreload" href="chunk-SCZIA43R.js"><link rel="modulepreload" href="chunk-6MDQTQU3.js"><script src="polyfills-B6TNHZQ6.js" type="module"></script><script src="main-KX5CV255.js" type="module"></script></body>
 </html>
 `;
