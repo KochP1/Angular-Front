@@ -11,8 +11,13 @@ import { RouterLink } from '@angular/router';
   styleUrl: './sidebar.css'
 })
 export class Sidebar {
+  userData: any | null;
   private snackBar = inject(MatSnackBar);
   constructor(private authService: Auth) {}
+
+  ngOnInit (): void {
+    this.loadUser();
+  }
 
   logout() {
     this.authService.logout().subscribe({
@@ -25,5 +30,20 @@ export class Sidebar {
         console.error('Error en logout:', err);
       }
     });
+  }
+
+  private loadUser(): void {
+    const user = localStorage.getItem('user');
+
+    if (user) {
+      try {
+        this.userData = JSON.parse(user);
+      } catch(e) {
+        this.snackBar.open('Error al obtener datos del usuario', 'X', {
+          duration: 3000
+        });
+        this.userData = null;
+      }
+    }
   }
 }

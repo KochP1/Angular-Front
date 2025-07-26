@@ -164,4 +164,47 @@ onSubmit(): void {
     this.router.navigate(['/dashboard/edit_tasks', id])
   }
 
+  editStatus(taskId: number, newStatus: string): void {
+    if (!this.tasks()) return;
+
+    this.isLoading.set(true);
+    
+    // Mostrar datos antes de enviar
+    console.log(`Actualizando tarea ${taskId} a estado: ${newStatus}`);
+
+    this.projectService.updateTaskStatus(taskId, newStatus).subscribe({
+      next: () => {
+        this.snackBar.open('✅ Estado actualizado', 'Cerrar', { duration: 3000 });
+        
+        // Actualización optimista
+        const updatedTasks = this.tasks()!.map(task => 
+          task.id === taskId ? { ...task, status: newStatus } : task
+        );
+        this.tasks.set(updatedTasks);
+      },
+      error: (err) => {
+        console.error('Error en la respuesta:', {
+          status: err.status,
+          message: err.message,
+          error: err.error
+        });
+
+        let errorMessage = 'Error al actualizar';
+        if (err.status === 400) {
+          errorMessage = 'Datos inválidos enviados al servidor';
+        } else if (err.status === 401) {
+          errorMessage = 'No autorizado';
+        }
+
+        this.snackBar.open(`❌ ${errorMessage}`, 'Cerrar', { duration: 3000 });
+        
+        // Revertir cambios recargando los datos
+        this.load_task();
+      },
+      complete: () => {
+        this.isLoading.set(false);
+      }
+    });
+  }
+
 }

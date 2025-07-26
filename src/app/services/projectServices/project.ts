@@ -3,7 +3,7 @@ import { environment } from '../../environments/enviroment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Auth } from '../auth';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 export interface ProjectsInterface {
   id: number
@@ -36,6 +36,7 @@ interface ProjectResponse {
 
 export class ProjectService {
   private apiUrl = `${environment.apiBaseUrl}/admin`;
+  private userApiUrl = `${environment.apiBaseUrl}/user`;
 
   constructor(private http: HttpClient, private router: Router, private authService: Auth) {}
 
@@ -256,5 +257,43 @@ export class ProjectService {
     });
     return this.http.put(`${this.apiUrl}/edit_task/${id}`, taskData, { headers });
   }
+
+  updateTaskStatus(id: number, status: string) {
+    const token = this.authService.getToken();
+    
+    if (!token) {
+      this.router.navigate(['/']);
+      return throwError(() => new Error('No autenticado'));
+    }
+
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    const body = JSON.stringify({ status: status });
+
+    // Usa HttpClient con opciones de tipo 'json' para manejo automático
+    return this.http.patch(
+      `${this.userApiUrl}/update_task_progress/${id}`,
+      body,
+      {
+        headers: new HttpHeaders(headers),
+        responseType: 'json'
+      }
+    ).pipe(
+      tap(response => console.log('Respuesta del servidor:', response)),
+      catchError(error => {
+        console.error('Error completo:', {
+          status: error.status,
+          url: error.url,
+          headers: error.headers,
+          error: error.error
+        });
+        return throwError(() => error);
+      })
+    );
+}
 
 }
