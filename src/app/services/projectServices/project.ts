@@ -36,6 +36,7 @@ interface ProjectResponse {
 
 export class ProjectService {
   private apiUrl = `${environment.apiBaseUrl}/admin`;
+  private userApiUrl = `${environment.apiBaseUrl}/user`;
 
   constructor(private http: HttpClient, private router: Router, private authService: Auth) {}
 
@@ -256,5 +257,20 @@ export class ProjectService {
     });
     return this.http.put(`${this.apiUrl}/edit_task/${id}`, taskData, { headers });
   }
+
+  updateTaskStatus(id: number, status: string) {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json' 
+    });
+
+    return this.http.patch(`${this.userApiUrl}/update_task_progress/${id}`, { progress: status }, { headers }).pipe(
+      catchError(error => {
+        console.error('Error updating task status:', error);
+        return throwError(() => error);
+      })
+    )
+  };
 
 }
