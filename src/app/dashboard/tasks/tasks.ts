@@ -174,7 +174,7 @@ onSubmit(): void {
 
     this.projectService.updateTaskStatus(taskId, newStatus).subscribe({
       next: () => {
-        this.snackBar.open('✅ Estado actualizado', 'Cerrar', { duration: 3000 });
+        this.snackBar.open('Estado actualizado', 'Cerrar', { duration: 3000 });
         
         // Actualización optimista
         const updatedTasks = this.tasks()!.map(task => 
@@ -196,7 +196,7 @@ onSubmit(): void {
           errorMessage = 'No autorizado';
         }
 
-        this.snackBar.open(`❌ ${errorMessage}`, 'Cerrar', { duration: 3000 });
+        this.snackBar.open(`${errorMessage}`, 'Cerrar', { duration: 3000 });
         
         // Revertir cambios recargando los datos
         this.load_task();

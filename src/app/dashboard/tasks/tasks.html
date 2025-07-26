@@ -1,5 +1,5 @@
 <div class="contenedor-tareas">
-    <form class="formulario-tarea" [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <form class="formulario-tarea" [formGroup]="taskForm" (ngSubmit)="onSubmit()" *ngIf="userData.role == 'admin'">
         <h2 class="titulo-formulario">Nueva Tarea</h2>
         
         <div class="grupo-formulario">
@@ -67,7 +67,7 @@
                 </select>
             </div>
             
-            <div class="acciones-tarea">
+            <div class="acciones-tarea" *ngIf="userData.role == 'admin'">
                 <button class="boton-editar" (click)="editTask(task.id)">Editar</button>
                 <button class="boton-eliminar" (click)="delete(task.id)">Eliminar</button>
             </div>

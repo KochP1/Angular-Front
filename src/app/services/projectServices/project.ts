@@ -174,6 +174,35 @@ export class ProjectService {
     }
   }
 
+  getAssignedProjects(id: number): Observable<ProjectsInterface[]> {
+    const token = this.authService.getToken();
+
+    if (!token) {
+      this.router.navigate(['/']);
+      return throwError(() => new Error('No autenticado'));
+
+    }
+
+    try {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+
+      return this.http.get<ProjectsInterface[]>(
+        `${this.userApiUrl}/user_projects/${id}/projects`,
+        { headers }
+      ).pipe(
+        catchError(error => {
+          console.error('Error fetching projects:', error);
+          return throwError(() => error);
+        })
+      );
+    } catch(parseError) {
+      console.error('Error parsing user data:', parseError);
+      return throwError(() => new Error('Datos de usuario corruptos'));
+    }
+  }
+
 
   updateProject(id: number, projectData: any) {
     const token = this.authService.getToken();
@@ -303,7 +332,6 @@ export class ProjectService {
 
     const body = JSON.stringify({ status: status });
 
-    // Usa HttpClient con opciones de tipo 'json' para manejo automático
     return this.http.patch(
       `${this.userApiUrl}/update_task_progress/${id}`,
       body,
@@ -334,17 +362,14 @@ assignProject(idUser: number, idProject: number) {
     return throwError(() => new Error('No autenticado'));
   }
 
-  // Configuración CORRECTA de headers
   const headers = new HttpHeaders({
     'Authorization': `Bearer ${token.trim()}`,
     'Content-Type': 'application/json'
   });
 
-  // URL CORREGIDA (observa "assign_project" correctamente escrito)
   const url = `${this.apiUrl}/assgin_project/${idUser}/${idProject}`;
   console.log('URL completa:', url);
 
-  // Envía un objeto vacío como body si el endpoint no requiere datos
   return this.http.post(url, {}, { headers }).pipe(
     catchError(error => {
       console.error('Error completo:', {
