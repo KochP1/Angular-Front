@@ -4,11 +4,11 @@
     </a>
     
     <ul class="side-list">
-        <li class="side-item">
+        <li class="side-item" *ngIf="userData.role == 'admin'">
             <i class="fa-solid fa-diagram-project"></i>
             <a routerLink="/dashboard/">Proyectos</a>
         </li>
-        <li class="side-item">
+        <li class="side-item" *ngIf="userData.role == 'admin'">
             <i class="fa-solid fa-users"></i>
             <a routerLink="/dashboard/users">Usuarios</a>
         </li>
