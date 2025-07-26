@@ -59,14 +59,12 @@
             <div class="estado-tarea">
                 <span>Estado:</span>
                     <select class="selector-estado">
-                        <option value="pending">Pendiente</option>
-                        <option value="in progress">En progreso</option>
-                        <option value="completed">Completada</option>
+                        <option value="{{task.status}}">{{task.status}}</option>
                     </select>
             </div>
             
             <div class="acciones-tarea">
-                <button class="boton-editar">Editar</button>
+                <button class="boton-editar" (click)="editTask(task.id)">Editar</button>
                 <button class="boton-eliminar" (click)="delete(task.id)">Eliminar</button>
             </div>
         </div>

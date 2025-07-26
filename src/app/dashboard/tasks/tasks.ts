@@ -4,7 +4,7 @@ import { ProjectService } from '../../services/projectServices/project';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TaskInterface } from '../../services/projectServices/project';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Auth, User } from '../../services/auth';
 
 @Component({
@@ -24,7 +24,7 @@ export class Tasks {
   users = signal<User[] | null>([]);
   isLoading = signal(false);
   error = signal<string | null>(null);
-  constructor(private projectService: ProjectService, private route: ActivatedRoute, private fb: FormBuilder, private authService: Auth) {
+  constructor(private projectService: ProjectService, private route: ActivatedRoute, private fb: FormBuilder, private authService: Auth, private router: Router) {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.taskForm = this.fb.group({
@@ -158,6 +158,10 @@ onSubmit(): void {
         }
       });
     }
+  }
+
+  editTask(id:number): void {
+    this.router.navigate(['/dashboard/edit_tasks', id])
   }
 
 }

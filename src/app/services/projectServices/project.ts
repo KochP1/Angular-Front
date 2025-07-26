@@ -115,7 +115,7 @@ export class ProjectService {
     }
   }
 
-    getProject(id: number): Observable<ProjectsInterface> {
+  getProject(id: number): Observable<ProjectsInterface> {
     const token = this.authService.getToken();
 
     if (!token) {
@@ -219,4 +219,42 @@ export class ProjectService {
       })
     )
   }
+
+  getTask(id: number): Observable<TaskInterface> {
+    const token = this.authService.getToken();
+
+    if (!token) {
+      this.router.navigate(['/']);
+      return throwError(() => new Error('No autenticado'));
+
+    }
+
+    try {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+
+      return this.http.get<TaskInterface>(
+        `${this.apiUrl}/get_task_id/${id}`,
+        { headers }
+      ).pipe(
+        catchError(error => {
+          console.error('Error fetching tasks:', error);
+          return throwError(() => error);
+        })
+      );
+    } catch(parseError) {
+      console.error('Error parsing user data:', parseError);
+      return throwError(() => new Error('Datos de usuario corruptos'));
+    }
+  }
+
+  updateTask(id: number, taskData: any) {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.put(`${this.apiUrl}/edit_task/${id}`, taskData, { headers });
+  }
+
 }
