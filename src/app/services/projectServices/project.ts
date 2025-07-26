@@ -145,6 +145,35 @@ export class ProjectService {
     }
   }
 
+  getAllProjects(): Observable<ProjectsInterface[]> {
+    const token = this.authService.getToken();
+
+    if (!token) {
+      this.router.navigate(['/']);
+      return throwError(() => new Error('No autenticado'));
+
+    }
+
+    try {
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+
+      return this.http.get<ProjectsInterface[]>(
+        `${this.apiUrl}/get_all_projects/`,
+        { headers }
+      ).pipe(
+        catchError(error => {
+          console.error('Error fetching projects:', error);
+          return throwError(() => error);
+        })
+      );
+    } catch(parseError) {
+      console.error('Error parsing user data:', parseError);
+      return throwError(() => new Error('Datos de usuario corruptos'));
+    }
+  }
+
 
   updateProject(id: number, projectData: any) {
     const token = this.authService.getToken();
@@ -294,6 +323,40 @@ export class ProjectService {
         return throwError(() => error);
       })
     );
+  }
+
+assignProject(idUser: number, idProject: number) {
+  const token = this.authService.getToken();
+  console.log('Token a enviar:', token);
+
+  if (!token) {
+    this.router.navigate(['/']);
+    return throwError(() => new Error('No autenticado'));
+  }
+
+  // Configuración CORRECTA de headers
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token.trim()}`,
+    'Content-Type': 'application/json'
+  });
+
+  // URL CORREGIDA (observa "assign_project" correctamente escrito)
+  const url = `${this.apiUrl}/assgin_project/${idUser}/${idProject}`;
+  console.log('URL completa:', url);
+
+  // Envía un objeto vacío como body si el endpoint no requiere datos
+  return this.http.post(url, {}, { headers }).pipe(
+    catchError(error => {
+      console.error('Error completo:', {
+        status: error.status,
+        message: error.message,
+        error: error.error,
+        url: error.url,
+        headers: error.request?.headers
+      });
+      return throwError(() => error);
+    })
+  );
 }
 
 }

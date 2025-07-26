@@ -71,6 +71,10 @@
                     <td class="actions">
                     <button class="btn-edit" (click)="editUser(user.id)">Editar</button>
                     <button class="btn-delete" (click)="deleteUser(user.id)">Eliminar</button>
+                    <select (change)="assignProject(user.id, $any($event.target).value)">
+                        <option value="">Asigna un proyecto</option>
+                        <option *ngFor="let project of projects()" value="{{project.id}}">{{project.name}}</option>
+                    </select>
                     </td>
                 </tr>
                 <tr *ngIf="users()?.length === 0 && !isLoading()">

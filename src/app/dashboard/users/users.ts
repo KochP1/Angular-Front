@@ -5,6 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from '../../services/auth';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ProjectService } from '../../services/projectServices/project';
+import { ProjectsInterface } from '../../services/projectServices/project';
 
 @Component({
   selector: 'app-users',
@@ -15,6 +17,7 @@ import { Router } from '@angular/router';
 export class Users {
   userForm: FormGroup
   users = signal<User[] | null>([]);
+  projects = signal<ProjectsInterface[] | null>(null);
   isLoading = signal(false);
   error = signal<string | null>(null);
   userData: any | null;
@@ -28,7 +31,7 @@ export class Users {
     role: 'user'
   };
 
-  constructor(private authService: Auth, private fb: FormBuilder, private router: Router) {
+  constructor(private authService: Auth, private fb: FormBuilder, private router: Router, private projectService: ProjectService) {
     this.userForm = this.fb.group({
       name: ['', [
         Validators.required,
@@ -58,6 +61,7 @@ export class Users {
   ngOnInit (): void {
     this.loadUser();
     this.loadUsers();
+    this.getProjects();
   }
 
   private loadUser(): void {
@@ -132,6 +136,42 @@ export class Users {
         }
       });
     }
+  }
+
+  assignProject(iduser:number, idProject: number): void {
+    this.isLoading.set(true);
+      
+    this.projectService.assignProject(iduser, idProject).subscribe({
+        next: () => {
+          this.showSuccess('Usuario asignado correctamente');
+          this.loadUsers();
+        },
+        error: (err) => {
+          this.showError(`Error al asignar usuario: ${err.message}`);
+          this.isLoading.set(false);
+        }
+      });
+  }
+
+  getProjects(): void {
+    this.isLoading.set(true);
+    this.error.set(null);
+    this.projectService.getAllProjects().subscribe(
+      {
+        next: (projects) => {
+          this.projects.set(projects);
+          console.log(this.projects())
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          this.error.set('Error al cargar proyectos');
+          this.isLoading.set(false);
+          this.snackBar.open(`Error al recuperar proyectos: ${err}`, 'X', {
+            duration: 3000
+          })
+        }
+      }
+    )
   }
 
   private resetForm(): void {

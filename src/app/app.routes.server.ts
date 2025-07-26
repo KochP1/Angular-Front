@@ -8,7 +8,7 @@ export const serverRoutes: ServerRoute[] = [
 
   {
     path: 'dashboard',
-    renderMode: RenderMode.Prerender,
+    renderMode: RenderMode.Client,
   },
 
   {
