@@ -1,0 +1,10 @@
+{
+  "routes": {
+    "/": {},
+    "/dashboard": {},
+    "/dashboard/acerca_de": {},
+    "/dashboard/settings": {},
+    "/dashboard/users": {},
+    "/regist": {}
+  }
+}
