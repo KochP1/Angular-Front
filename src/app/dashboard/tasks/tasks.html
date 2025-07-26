@@ -58,7 +58,9 @@
             
             <div class="estado-tarea">
                 <span>Estado:</span>
-                <select class="selector-estado" [value]="task.status">
+                <select class="selector-estado" 
+                    [value]="task.status"
+                    (change)="editStatus(task.id, $any($event.target).value)">
                     <option value="pending">Pendiente</option>
                     <option value="in_progress">En progreso</option>
                     <option value="completed">Completada</option>
