@@ -33,6 +33,10 @@ export class Login {
 
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
+          if (response.user?.role == 'user') {
+            this.router.navigate(['/dashboard/user_projects']);
+            return;
+          }
           this.router.navigate(['/dashboard']);
         },
         error: (err) => {

@@ -12,6 +12,10 @@
             <i class="fa-solid fa-users"></i>
             <a routerLink="/dashboard/users">Usuarios</a>
         </li>
+        <li class="side-item" *ngIf="userData.role == 'user'">
+            <i class="fa-solid fa-diagram-project"></i>
+            <a routerLink="/dashboard/user_projects">Proyectos</a>
+        </li>
         <li class="side-item">
             <i class="fa-solid fa-circle-info"></i>
             <a routerLink="/dashboard/acerca_de">Acerca de</a>
