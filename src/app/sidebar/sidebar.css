@@ -51,3 +51,9 @@
 .dashboard__logo:hover {
     cursor: pointer;
 }
+
+@media(max-width: 750px) {
+    .side-bar{
+        display: none;
+    }
+}

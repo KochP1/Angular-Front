@@ -5,4 +5,36 @@
     <div class="user-icon__container">
         <span>{{ userData.name[0] }}</span>
     </div>
+
+    <div class="responsive-icon" (click)="toggleResponsiveNav()">
+        <span>{{ userData.name[0] }}</span>
+    </div>
+
+    <ul #responsiveNav class="responsiveNav">
+        <li (click)="toggleResponsiveNav()" class="side-item"><i class="fa-solid fa-xmark"></i></li>
+        <li class="side-item" *ngIf="userData.role == 'admin'">
+            <i class="fa-solid fa-diagram-project"></i>
+            <a routerLink="/dashboard/">Proyectos</a>
+        </li>
+        <li class="side-item" *ngIf="userData.role == 'admin'">
+            <i class="fa-solid fa-users"></i>
+            <a routerLink="/dashboard/users">Usuarios</a>
+        </li>
+        <li class="side-item" *ngIf="userData.role == 'user'">
+            <i class="fa-solid fa-diagram-project"></i>
+            <a routerLink="/dashboard/user_projects">Proyectos</a>
+        </li>
+        <li class="side-item">
+            <i class="fa-solid fa-circle-info"></i>
+            <a routerLink="/dashboard/acerca_de">Acerca de</a>
+        </li>
+        <li class="side-item">
+            <i class="fa-solid fa-gear"></i>
+            <a routerLink="/dashboard/settings">Ajustes</a>
+        </li>
+        <li class="side-item">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <a class="logout-link" (click)="logout(); $event.preventDefault()">Salir</a>
+        </li>
+    </ul>
 </nav>

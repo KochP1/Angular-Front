@@ -27,7 +27,6 @@ body {
   /* 5. Improve text rendering */
     -webkit-font-smoothing: antialiased;
     font-family: sans-serif;
-    height: 100vh;
 }
 /* 6. Improve media defaults */
 img, picture, video, canvas, svg {

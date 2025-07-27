@@ -2,26 +2,27 @@
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-color: #f5f5f5; /* Color de fondo opcional */
+  background-color: #f5f5f5; 
 }
 
 .sidebar {
-  width: 250px; /* Ancho fijo */
-  flex-shrink: 0; /* Evita que se encoja */
-  background-color: #2c3e50; /* Color de la sidebar */
-  height: 100vh; /* Ocupa el 100% del alto */
-  overflow-y: auto; /* Scroll si el contenido excede el alto */
+  width: 250px;
+  flex-shrink: 0;
+  background-color: #2c3e50;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .main-content {
-  flex-grow: 1; /* Ocupa todo el espacio restante */
+  flex-grow: 1;
   display: flex;
-  flex-direction: column; /* Apila navbar y contenido verticalmente */
-  min-height: 100vh; /* Asegura que cubra todo el alto */
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .content {
-  flex-grow: 1; /* El contenido ocupa el espacio restante */
-  padding: 20px; /* Espaciado interno */
-  overflow-y: auto; /* Scroll para el contenido */
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
 }
+
